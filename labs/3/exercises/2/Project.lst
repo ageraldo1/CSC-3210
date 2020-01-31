@@ -1,0 +1,99 @@
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    01/31/20 09:32:50
+AddTwo.asm						     Page 1 - 1
+
+
+				; Exercise2.asm - calculate the following: a = b + c – 7Fh
+				; a, b, and c are 16-bit registers and b=66h and c=50h
+				; Exercise 2 - Lab
+				;     b + c  
+				;         66h + 50h = B6
+				;     B6 - 7F 
+				;         37  => a
+				;         
+				;     dec : 55
+				;     hex : 37
+				;     bin : 0011 0111
+				;
+				;     opcode <destination> <source>
+				;
+				;     AH | AL = 8 bits
+				;     AX      = 16 bits
+				;     EAX     = 32 bits
+
+				.386
+				.model flat,stdcall
+				.stack 4096
+				ExitProcess proto,dwExitCode:dword
+
+ 00000000			.data
+ 00000000 00000000		v_result  dword ?
+ 00000004 00000066		v_b  dword 66h
+ 00000008 00000050		v_c  dword 50h
+ 0000000C 0000007F		v_d  dword 7Fh
+
+ 00000000			.code
+ 00000000			main proc
+ 00000000  B8 00000000			mov	eax,0             ; clear
+					
+ 00000005  A1 00000004 R		mov eax,v_b
+ 0000000A  03 05 00000008 R		add eax,v_c
+ 00000010  2B 05 0000000C R		sub eax,v_d
+ 00000016  A3 00000000 R		mov v_result,eax
+
+					;EFLAGS
+					;    OV = Overflow
+					;    CY = Carry Flag	
+					;    PL = Signal Flag
+					;    ZR = Zero Flag
+					
+					; 0 | 0 | 0 | 0
+
+					invoke ExitProcess,0
+ 0000001B  6A 00	   *	    push   +000000000h
+ 0000001D  E8 00000000 E   *	    call   ExitProcess
+ 00000022			main endp
+				end main
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    01/31/20 09:32:50
+AddTwo.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00001000 DWord	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000010 DWord	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000022 DWord	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000022 Public STDCALL
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+v_b  . . . . . . . . . . . . . .	DWord	 00000004 _DATA	
+v_c  . . . . . . . . . . . . . .	DWord	 00000008 _DATA	
+v_d  . . . . . . . . . . . . . .	DWord	 0000000C _DATA	
+v_result . . . . . . . . . . . .	DWord	 00000000 _DATA	
+
+	   0 Warnings
+	   0 Errors
