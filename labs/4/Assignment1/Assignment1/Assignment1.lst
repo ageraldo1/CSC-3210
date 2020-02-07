@@ -1,9 +1,10 @@
-Microsoft (R) Macro Assembler Version 14.16.27035.0	    02/07/20 08:13:44
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    02/07/20 09:15:34
 AddTwo.asm						     Page 1 - 1
 
 
 				; Lab 4 - Assignment 1
 				; opcode <destination> <source>
+				; unsigned operation
 
 				.386
 				.model flat,stdcall
@@ -17,9 +18,9 @@ AddTwo.asm						     Page 1 - 1
  0000000A  B9 00000000			mov ecx,0h		; debug purpose only
  0000000F  BA 00000000			mov edx,0h		; debug purpose only
 					
- 00000014  B3 5E			mov	bl, 94d		; 8 bits  (0x5E)
- 00000016  B1 40			mov cl, 64d		; 8 bits  (0x40)
- 00000018  B2 1F			mov dl, 31d		; 8 bits  (0X1F)
+ 00000014  B3 5E		    mov bl, 94d     ; 8 bits  (0x5E)
+ 00000016  B1 40			mov cl, 64d     ; 8 bits  (0x40)
+ 00000018  B2 1F			mov dl, 31d     ; 8 bits  (0X1F)
 
  0000001A  02 CB			add cl, bl		; 94  + 64 = 158 (0x9E)
 					;==========================================
@@ -28,11 +29,13 @@ AddTwo.asm						     Page 1 - 1
 					;     ----       ------------
 					;     158          1001 1110
 					;   
-					;     EFLASG
+					;     EFLAGS
 					;			OV (overflow) = 1 
 					;			PL (signal)   = 1 
 					;			ZR (zero)     = 0 
-					;			CY (carry)    = 0 
+					;			CY (carry)    = 0
+					;
+					; VS Output : OV = 1 UP = 0 EI = 1 PL = 1 ZR = 0 AC = 0 PE = 0 CY = 0 
 					;==========================================
 
  0000001C  2A CA			sub cl, dl		; 158 - 31 = 127 (0x7F)
@@ -42,11 +45,13 @@ AddTwo.asm						     Page 1 - 1
 					;     ----       ------------
 					;     127        1|0111 1111
 					;                   
-					;     EFLASG
+					;     EFLAGS
 					;			OV (overflow) = 1 
 					;			PL (signal)   = 0 
 					;			ZR (zero)     = 0 
 					;			CY (carry)    = 1  ?? (VS CY = 0) 
+					;
+					; VS Output : OV = 1 UP = 0 EI = 1 PL = 0 ZR = 0 AC = 1 PE = 0 CY = 0 
 					;==========================================
 
  0000001E  8A C1			mov al, cl      ; 127 = (0x7F)
@@ -57,7 +62,7 @@ AddTwo.asm						     Page 1 - 1
  00000022  E8 00000000 E   *	    call   ExitProcess
  00000027			main endp
 				end main
-Microsoft (R) Macro Assembler Version 14.16.27035.0	    02/07/20 08:13:44
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    02/07/20 09:15:34
 AddTwo.asm						     Symbols 2 - 1
 
 
