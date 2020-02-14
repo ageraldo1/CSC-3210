@@ -1,0 +1,97 @@
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    02/13/20 10:28:41
+AddTwo.asm						     Page 1 - 1
+
+
+				; AddTwo.asm - adds two 32-bit integers.
+				; Lab 5 - Exercise 1
+				; EAX = Xval + (Yval - Zval) + 10h
+
+				.386
+				.model flat,stdcall
+				.stack 4096
+				ExitProcess proto,dwExitCode:dword
+
+ 00000000			.data
+ 00000000 0000001A			Xval SDWORD 26d     ; 0x1A
+ 00000004 0000001E			Yval DWORD  30d     ; 0x1E
+ 00000008 00000028			Zval DWORD  40d     ; 0x28
+
+ 00000000			.code
+ 00000000			main proc
+ 00000000  B8 00000000			mov eax,0h          ;debug purpose only
+					
+ 00000005  A1 00000004 R		mov eax, Yval       ; 0x1E      
+ 0000000A  2B 05 00000008 R		sub eax, Zval       ; FF FF FF F6  => FF due to two complements (30 - 40 = -10)
+					;===============================
+					; (Yval - Zval)
+					; 
+					; 1E - 28 = Two complement
+					;     a) subtract FF
+					;           FF
+					;        -  28
+					;          ====
+					;           D7
+					;
+					;      b) add one
+					;           D7
+					;           +1
+					;          ====
+					;           D8
+					;      c) Sum both numbers
+					;           1E
+					;         + D8
+					;          ====
+					;           F6 
+					;===============================
+
+ 00000010  03 05 00000000 R		add eax, Xval       ; 00 00 00 10  => (-10 + 26 = 16)
+ 00000016  83 C0 10			add eax, 10h        ; 00 00 00 20  => (16 + 16 = 32)
+
+					invoke ExitProcess,0
+ 00000019  6A 00	   *	    push   +000000000h
+ 0000001B  E8 00000000 E   *	    call   ExitProcess
+ 00000020			main endp
+				end main
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    02/13/20 10:28:41
+AddTwo.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00001000 DWord	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 0000000C DWord	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000020 DWord	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000020 Public STDCALL
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+Xval . . . . . . . . . . . . . .	DWord	 00000000 _DATA	
+Yval . . . . . . . . . . . . . .	DWord	 00000004 _DATA	
+Zval . . . . . . . . . . . . . .	DWord	 00000008 _DATA	
+
+	   0 Warnings
+	   0 Errors
