@@ -1,0 +1,107 @@
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    02/21/20 07:15:15
+AddTwo.asm						     Page 1 - 1
+
+
+				; Calculating the size of the String
+				; Lab 6
+
+				.386
+				.model flat,stdcall
+				.stack 4096
+				ExitProcess proto,dwExitCode:dword
+
+ 00000000			.data
+ 00000000 54 68 69 73 20		myString byte "This is a very long string made by your instructor to test how $ works in this lab hope you will like it"
+	   69 73 20 61 20
+	   76 65 72 79 20
+	   6C 6F 6E 67 20
+	   73 74 72 69 6E
+	   67 20 6D 61 64
+	   65 20 62 79 20
+	   79 6F 75 72 20
+	   69 6E 73 74 72
+	   75 63 74 6F 72
+	   20 74 6F 20 74
+	   65 73 74 20 68
+	   6F 77 20 24 20
+	   77 6F 72 6B 73
+	   20 69 6E 20 74
+	   68 69 73 20 6C
+	   61 62 20 68 6F
+	   70 65 20 79 6F
+	   75 20 77 69 6C
+	   6C 20 6C 69 6B
+	   65 20 69 74
+ 00000068 = 00000068			myString_length = ($ - myString)
+
+ = 00000068				asize = SIZEOF myString
+
+ 00000000			.code
+ 00000000			main proc
+ 00000000  B8 00000000			mov eax,0h
+ 00000005  BB 00000000			mov ebx,0h
+
+ 0000000A  B0 68			mov al, myString_length
+ 0000000C  B3 68			mov bl, asize
+					;========================================
+					; myString
+					;      len : 104
+					; EAX
+					;    00 00 00 68 (hex) => 104d
+					;
+					; EBX
+					;    00 00 00 68 (hex) => 104d
+					;============================================
+					; $ => counts white space and does not count null terminator
+					; double check using SIZEOF operator (EBX)
+					; SIZEOF : The SIZEOF operator returns the number of bytes used by an array initializer.
+					;=============================================
+
+					invoke ExitProcess,0
+ 0000000E  6A 00	   *	    push   +000000000h
+ 00000010  E8 00000000 E   *	    call   ExitProcess
+ 00000015			main endp
+				end main
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    02/21/20 07:15:15
+AddTwo.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00001000 DWord	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000068 DWord	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000015 DWord	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000015 Public STDCALL
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+asize  . . . . . . . . . . . . .	Number	 00000068h   
+myString_length  . . . . . . . .	Number	 00000068h   
+myString . . . . . . . . . . . .	Byte	 00000000 _DATA	
+
+	   0 Warnings
+	   0 Errors
