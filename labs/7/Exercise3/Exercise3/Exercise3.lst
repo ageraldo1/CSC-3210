@@ -1,0 +1,157 @@
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    02/28/20 08:46:33
+AddTwo.asm						     Page 1 - 1
+
+
+				; Exercise 3: Indirect memory access using OFFSET Operator and pointers
+
+				.386
+				.model flat,stdcall
+				.stack 4096
+				ExitProcess proto,dwExitCode:dword
+
+ 00000000			.data
+ 00000000 10 20 30 40			myBytes		BYTE	10h,20h,30h,40h
+ 00000004 008A 003B 0072		myWords		WORD	8Ah,3Bh,72h,44h,66h
+	   0044 0066
+ 0000000E 00000001			myDoubles	DWORD	1,2,3,4,5
+	   00000002
+	   00000003
+	   00000004
+	   00000005
+ 00000022 0000000E R			myPointer	DWORD	myDoubles
+
+ 00000000			.code
+ 00000000			main proc
+ 00000000  B8 00000000			mov eax, 0		;debug purpose only
+ 00000005  BB 00000000			mov ebx, 0		;debug purpose only
+ 0000000A  B9 00000000			mov ecx, 0		;debug purpose only
+
+ 0000000F  BE 00000000 R		mov esi,OFFSET myBytes
+					;================================
+					; myBytes addr : 00 40 40 00
+					; esi          : 00 40 40 00 
+					;================================
+					
+					;=====================================================
+					; dereferencing esi on ecx for debug purpose only
+					;=====================================================
+ 00000014  8B 0E			mov ecx, [esi] 
+
+					;================================
+					; ecx : 40 30 20 10
+					;             AH AL
+					;               AX
+					;================================
+
+ 00000016  66| 8B 06			mov ax,[esi]		
+					;=================================
+					; a. AX = 20 10
+					;=================================
+					
+ 00000019  8B 35 00000022 R		mov esi,myPointer	
+					;=================================================================================================================
+					; b. What is the difference between this memory access mode and direct offset operand
+					; direct mode   : the address field refers directly to the memory location at which the data is stored. 
+					; indirect mode : the address field refers to the register first, which is then directed to the memory location
+					; Using inderect mode, we can access part of the data (line 55)
+					;=================================================================================================================
+
+					;=====================================================
+					; dereferencing esi on ecx for debug purpose only
+					;=====================================================
+ 0000001F  8B 0E			mov ecx, [esi] 
+
+ 00000021  66| 8B 46 06			mov ax,[esi+6]
+					;=======================================================================================================
+					; myDoubles	DWORD	1,2,3,4,5
+					;
+					;  00  01  02  03  04   05 06  07  08  09  10  11  12  13  14  15   16  17  18  19 20
+					; +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
+					; | 01| 00| 00| 00| 02|00 |00 | 00|03 |00 |00 |00 |04 |00 |00 | 00|05 |00 |00 |00 |00 |
+					; +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+
+					;                         |  AX   |
+					; c. AX = 00 00
+					;=====================================================================================================
+
+ 00000025  BE 00000004 R		mov esi,OFFSET myWords
+					;=====================================================
+					; dereferencing esi on ecx for debug purpose only
+					;=====================================================
+ 0000002A  8B 0E			 mov ecx, [esi] 
+					
+ 0000002C  8B 46 02			mov eax, [esi+2]
+					;===============================================================
+					; myWords WORD	8Ah,3Bh,72h,44h,66h
+					;
+					;  00  01  02  03  04   05 06  07  08  09  
+					; +---+---+---+---+---+---+---+---+---+---+
+					; | 8A| 00| 3B| 00| 72|00 |44 | 00|66 |00 |
+					; +---+---+---+---+---+---+---+---+---+---+
+				    ;         |     EAX       |   
+					;
+					; EAX = 00 72 00 3B
+					;===============================================================
+
+					;===============================================================
+					; ESI     = mov esi,OFFSET myWords
+					; AX      = 00 3B
+					; [esi]   = 00 3B 00 8A
+					; myWords = 8a 00 3b 00 72 00 44 00 66 00
+					;===============================================================
+ 0000002F  66| 89 06			mov [esi], ax		;uncomment the instruction, why this would not work?
+
+					;========================================================================
+					; myWords = 3b 00 3b 00 72 00 44 00 66 00
+					;     It did work. The mov change the first element of the myWwords 
+					;     array [8A] by the value the was  previously store on AX (3B)
+					;======================================================================
+
+					invoke ExitProcess,0
+ 00000032  6A 00	   *	    push   +000000000h
+ 00000034  E8 00000000 E   *	    call   ExitProcess
+ 00000039			main endp
+				end main
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    02/28/20 08:46:33
+AddTwo.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00001000 DWord	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000026 DWord	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000039 DWord	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000039 Public STDCALL
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+myBytes  . . . . . . . . . . . .	Byte	 00000000 _DATA	
+myDoubles  . . . . . . . . . . .	DWord	 0000000E _DATA	
+myPointer  . . . . . . . . . . .	DWord	 00000022 _DATA	
+myWords  . . . . . . . . . . . .	Word	 00000004 _DATA	
+
+	   0 Warnings
+	   0 Errors
