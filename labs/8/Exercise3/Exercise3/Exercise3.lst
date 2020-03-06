@@ -1,0 +1,110 @@
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    03/06/20 09:28:21
+AddTwo.asm						     Page 1 - 1
+
+
+				; Exercise 3 
+				; Write and run a program and answer the questions in the box.
+
+
+				.386
+				.model flat,stdcall
+				.stack 4096
+				ExitProcess proto,dwExitCode:dword
+
+ 00000000			.data
+ 00000000 6000 7000 8000		intarray WORD 6000h,7000h,8000h,9000h,5000h,4000h
+	   9000 5000 4000
+
+ 00000000			.code
+
+ 00000000			main proc
+ 00000000  B8 00000000			mov eax, 0						; debug purpose only
+
+ 00000005  BF 00000000 R		mov edi,OFFSET intarray			; address of intarray
+ 0000000A  B9 00000006			mov ecx,LENGTHOF intarray		; loop counter
+ 0000000F  66| B8 0000			mov ax,0						; zero the accumulator
+					
+					;==========================================================
+					; EAX
+					;==========================================================
+					; step 1 -> 6000h + 7000h = D000h
+					; step 2 -> D000h + 8000h = 5000h
+					; step 3 -> 5000h + 9000h = E000h
+					; step 4 -> E000h + 5000h = 3000h
+					; step 5 -> 3000h + 4000h = 7000h
+					;==========================================================
+
+ 00000013				L1:
+ 00000013  66| 03 07				add ax,[edi]				; add an integer
+ 00000016  83 C7 02				add edi,TYPE intarray		; point to next integer
+ 00000019  E2 F8				loop L1						; repeat until ECX = 0
+
+				    ;====================================================================================================
+					; Change the lines of code highlighted in red so the addition start from most right element (4000h).
+					;====================================================================================================
+ 0000001B  BF 0000000A R		mov edi,OFFSET intarray+10		; address of intarray starting on 4000h
+ 00000020  B9 00000006			mov ecx,LENGTHOF intarray		; loop counter
+ 00000025  66| B8 0000			mov ax,0						; zero the accumulator
+ 00000029  BB 00000000			mov ebx,0                       ; debug purpose only
+
+ 0000002E				L2:
+ 0000002E  8B 1F				mov ebx,[edi]               ; debug purpose only
+ 00000030  66| 03 07				add ax,[edi]				; add an integer
+ 00000033  83 EF 02				sub edi,TYPE intarray		; point to next integer
+ 00000036  E2 F6				loop L2						; repeat until ECX = 0
+
+				    ;====================================================================================================
+					; Is the ZF flag set? Why
+					; During the lab, we changed the code to add the array in reverse order. ZF flag wasn't set during 
+					; the loop interation
+					;====================================================================================================
+
+
+					invoke ExitProcess,0
+ 00000038  6A 00	   *	    push   +000000000h
+ 0000003A  E8 00000000 E   *	    call   ExitProcess
+ 0000003F			main endp
+				end main
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    03/06/20 09:28:21
+AddTwo.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00001000 DWord	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 0000000C DWord	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 0000003F DWord	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000003F Public STDCALL
+  L1 . . . . . . . . . . . . . .	L Near	 00000013 _TEXT	
+  L2 . . . . . . . . . . . . . .	L Near	 0000002E _TEXT	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+intarray . . . . . . . . . . . .	Word	 00000000 _DATA	
+
+	   0 Warnings
+	   0 Errors
