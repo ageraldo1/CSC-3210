@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 14.16.27035.0	    03/11/20 16:01:24
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    03/12/20 08:13:57
 AddTwo.asm						     Page 1 - 1
 
 
@@ -74,15 +74,19 @@ AddTwo.asm						     Page 1 - 1
 					;   SF = 1
 					;============================================
 
-					;==========================================================================
+					;=================================================================================
 					;Did the value in al register change when and, or, and xor were used? Why? 
-					;==========================================================================
+					;=================================================================================
+					; Answer : Yes because AND,OR and XOR instructions performs a destructive operation
+					;          on the destination operand.
+					;=================================================================================
+
 					invoke ExitProcess,0
  00000015  6A 00	   *	    push   +000000000h
  00000017  E8 00000000 E   *	    call   ExitProcess
  0000001C			main endp
 				end main
-Microsoft (R) Macro Assembler Version 14.16.27035.0	    03/11/20 16:01:24
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    03/12/20 08:13:57
 AddTwo.asm						     Symbols 2 - 1
 
 

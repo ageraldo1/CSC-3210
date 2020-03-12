@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 14.16.27035.0	    03/12/20 08:05:14
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    03/12/20 08:19:53
 AddTwo.asm						     Page 1 - 1
 
 
@@ -52,17 +52,25 @@ AddTwo.asm						     Page 1 - 1
 
 					;==========================
 					; SUM = (166h) (358d)
-					;==========================
-
-
-					
+					;
+					;      +----+
+					;      | 66 |
+					;      +----+
+					;      | 01 |
+					;      +----+
+					;      | 00 |
+					;      +----+
+					;      | 00 |
+					;      +----+
+					;				66 01 00 00
+					;==========================	
 
 					invoke ExitProcess,0
  00000035  6A 00	   *	    push   +000000000h
  00000037  E8 00000000 E   *	    call   ExitProcess
  0000003C			main endp
 				end main
-Microsoft (R) Macro Assembler Version 14.16.27035.0	    03/12/20 08:05:14
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    03/12/20 08:19:53
 AddTwo.asm						     Symbols 2 - 1
 
 

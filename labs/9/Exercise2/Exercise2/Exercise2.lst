@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 14.16.27035.0	    03/11/20 16:52:51
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    03/12/20 08:16:47
 AddTwo.asm						     Page 1 - 1
 
 
@@ -66,12 +66,19 @@ AddTwo.asm						     Page 1 - 1
 					;   SF = 1		; result is negative
 					;============================================
 
+					;==========================================================================================
+					; Q : Did the value in al, bl, cl register change when test and CMP were 
+					;     used? Why?
+					;
+					; A : No, TEST and CMP instructions are nondestructive instructions operands (only affects eflags)
+					;===========================================================================================
+
 					invoke ExitProcess,0
  0000001D  6A 00	   *	    push   +000000000h
  0000001F  E8 00000000 E   *	    call   ExitProcess
  00000024			main endp
 				end main
-Microsoft (R) Macro Assembler Version 14.16.27035.0	    03/11/20 16:52:51
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    03/12/20 08:16:47
 AddTwo.asm						     Symbols 2 - 1
 
 
