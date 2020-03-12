@@ -1,0 +1,124 @@
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    03/11/20 16:01:24
+AddTwo.asm						     Page 1 - 1
+
+
+				; Problem 1
+				; Write and run a program to find the values of each destination operand.
+
+				.386
+				.model flat,stdcall
+				.stack 4096
+				ExitProcess proto,dwExitCode:dword
+
+ 00000000			.code
+ 00000000			main proc
+ 00000000  B8 00000000			mov eax,0	; debug purpose only
+
+ 00000005  B0 6F			mov al, 01101111b
+ 00000007  24 2D			and al, 00101101b
+					;============================================
+					;       01101111
+					;       00101101
+					;  AND -----------
+					;       00101101
+					; 
+					;   AL = 0010 1101 (2Dh)
+					;   ZF = 0
+					;   SF = 0
+					;============================================
+
+ 00000009  B0 6D			mov al,6Dh
+ 0000000B  24 4A			and al,4Ah
+					;============================================
+					; 6Dh = 0110 1101
+					; 4Ah = 0100 1010
+					;
+					;       0110 1101
+					;       0100 1010
+					;  AND ------------
+					;       0100 1000
+					; 
+					;   AL = 0100 1000 (48h)
+					;   ZF = 0
+					;   SF = 0
+					;============================================
+
+ 0000000D  B0 0F			mov al,00001111b
+ 0000000F  0C 61			or  al,61h
+					;============================================
+					; 61h =  0110 0001
+					;
+					;       0000 1111
+					;       0110 0001
+					;   OR -----------
+					;       0110 1111
+					;
+					;   AL = 0110 1111 (6Fh)
+					;   ZF = 0
+					;   SF = 0
+					;============================================
+
+ 00000011  B0 94			mov al,94h
+ 00000013  34 37			xor al,37h
+					;============================================
+					; 94h = 1001 0100
+					; 37h = 0011 0111
+					;
+					;       1001 0100
+					;       0011 0111
+					;  XOR -----------
+					;       1010 0011
+					;
+					;   AL = 1010 0011 (A3Fh)
+					;   ZF = 0
+					;   SF = 1
+					;============================================
+
+					;==========================================================================
+					;Did the value in al register change when and, or, and xor were used? Why? 
+					;==========================================================================
+					invoke ExitProcess,0
+ 00000015  6A 00	   *	    push   +000000000h
+ 00000017  E8 00000000 E   *	    call   ExitProcess
+ 0000001C			main endp
+				end main
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    03/11/20 16:01:24
+AddTwo.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00001000 DWord	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000000 DWord	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 0000001C DWord	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000001C Public STDCALL
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+
+	   0 Warnings
+	   0 Errors

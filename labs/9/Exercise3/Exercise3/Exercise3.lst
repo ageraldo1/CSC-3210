@@ -1,0 +1,127 @@
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    03/12/20 07:51:32
+AddTwo.asm						     Page 1 - 1
+
+
+				; Problem 3
+				; Implement the following pseudocode in assembly language.
+				; 
+				;  if ( bl > cl)
+				;     al = 50
+				;  else
+				;      dl = 23
+				;      al = al - dl
+				;  end if
+
+				; bl > cl 
+				;	(dest > src)
+				;	ZF = 0, CF = 0
+				;			JA (if leftOp > rightOp)	; unsigned
+				;			JG (if leftOp > rightOp)	; signed 
+
+				.386
+				.model flat,stdcall
+				.stack 4096
+				ExitProcess proto,dwExitCode:dword
+
+ 00000000			.code
+ 00000000			main proc
+ 00000000  B8 00000000			mov eax,0		; debug purpose only
+ 00000005  BB 00000000			mov ebx,0		; debug purpose only
+ 0000000A  B9 00000000			mov ecx,0		; debug purpose only
+
+					;==============================================
+					; simulate : (bl > cl)
+					;==============================================
+ 0000000F  B3 07			mov bl, 7
+ 00000011  B1 03			mov cl, 3
+
+ 00000013  3A D9			cmp bl,cl			; ZF = 0, CF = 0
+ 00000015  77 06			ja isGreater1		; jump to Greater if bl > cl
+
+ 00000017  B2 17			mov dl, 23
+ 00000019  2A C2			sub al, dl
+ 0000001B  EB 02			jmp end1
+					
+
+ 0000001D				isGreater1:
+ 0000001D  B0 32				mov al, 50
+
+ 0000001F				end1:
+
+					;==============================================
+					;  AL = 32h	(50d)
+					;==============================================
+
+					;==============================================
+					; simulate : (bl < cl) 
+					;==============================================
+ 0000001F  B3 07			mov bl, 7
+ 00000021  B1 1E			mov cl, 30
+
+ 00000023  3A D9			cmp bl,cl			; ZF = 0, CF = 0
+ 00000025  77 06			ja isGreater2		; jump to Greater if bl > cl
+
+ 00000027  B2 17			mov dl, 23
+ 00000029  2A C2			sub al, dl
+ 0000002B  EB 02			jmp end2
+
+ 0000002D				isGreater2:
+ 0000002D  B0 32				mov al, 50
+
+ 0000002F				end2:
+
+					
+					;==============================================
+					;  AL = 1Bh	(27d)
+					;==============================================
+
+
+					invoke ExitProcess,0
+ 0000002F  6A 00	   *	    push   +000000000h
+ 00000031  E8 00000000 E   *	    call   ExitProcess
+ 00000036			main endp
+				end main
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    03/12/20 07:51:32
+AddTwo.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00001000 DWord	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000000 DWord	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000036 DWord	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000036 Public STDCALL
+  isGreater1 . . . . . . . . . .	L Near	 0000001D _TEXT	
+  end1 . . . . . . . . . . . . .	L Near	 0000001F _TEXT	
+  isGreater2 . . . . . . . . . .	L Near	 0000002D _TEXT	
+  end2 . . . . . . . . . . . . .	L Near	 0000002F _TEXT	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+
+	   0 Warnings
+	   0 Errors
