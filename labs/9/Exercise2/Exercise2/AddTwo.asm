@@ -42,7 +42,7 @@ main proc
 	;
 	;   dest > src
 	; 
-	;   AL = 0000 1111 (0Fh)
+	;   BL = 0000 0110 (06h)
 	;   CF = 0
 	;   ZF = 0
 	;   SF = 0
@@ -56,8 +56,8 @@ main proc
 	;
 	;   dest < src
 	; 
-	;   AL = 0000 1111 (0Fh)
-	;   CF = 1
+	;   CL = 0000 0101 (05h)
+	;   CF = 0
 	;   ZF = 0
 	;   SF = 1		; result is negative
 	;============================================

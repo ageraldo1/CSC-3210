@@ -1,4 +1,4 @@
-Microsoft (R) Macro Assembler Version 14.16.27035.0	    03/12/20 08:16:47
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    03/13/20 09:09:54
 AddTwo.asm						     Page 1 - 1
 
 
@@ -46,7 +46,7 @@ AddTwo.asm						     Page 1 - 1
 					;
 					;   dest > src
 					; 
-					;   AL = 0000 1111 (0Fh)
+					;   BL = 0000 0110 (06h)
 					;   CF = 0
 					;   ZF = 0
 					;   SF = 0
@@ -60,10 +60,10 @@ AddTwo.asm						     Page 1 - 1
 					;
 					;   dest < src
 					; 
-					;   AL = 0000 1111 (0Fh)
-					;   CF = 1
+					;   CL = 0000 0101 (05h)
+					;   CF = 0
 					;   ZF = 0
-					;   SF = 1		; result is negative
+					;   SF = 0		; result is negative
 					;============================================
 
 					;==========================================================================================
@@ -78,7 +78,7 @@ AddTwo.asm						     Page 1 - 1
  0000001F  E8 00000000 E   *	    call   ExitProcess
  00000024			main endp
 				end main
-Microsoft (R) Macro Assembler Version 14.16.27035.0	    03/12/20 08:16:47
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    03/13/20 09:09:54
 AddTwo.asm						     Symbols 2 - 1
 
 
