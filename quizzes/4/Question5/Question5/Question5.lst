@@ -1,0 +1,82 @@
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    03/30/20 11:34:57
+AddTwo.asm						     Page 1 - 1
+
+
+				; AddTwo.asm - adds two 32-bit integers.
+				; Chapter 3 example
+
+				.386
+				.model flat,stdcall
+				.stack 4096
+				ExitProcess proto,dwExitCode:dword
+
+ 00000000			.data
+ 00000000 10 20 30 40			myBytes BYTE 10h,20h,30h,40h
+ 00000004  00000003 [			myWords WORD 3 DUP(?),2000h
+	    0000
+	   ] 2000
+ 0000000C 41 42 43 44 45		myString BYTE "ABCDE"
+				 
+
+ 00000000			.code
+ 00000000			main proc
+ 00000000  B8 00000000			mov eax, 0	;debug purpose only
+ 00000005  BB 00000000			mov ebx, 0	;debug purpose only
+ 0000000A  B9 00000000			mov ecx, 0  ;debug purpose only
+
+ 0000000F  B8 00000001			mov eax,TYPE myBytes ; a.
+ 00000014  B8 00000004			mov eax,LENGTHOF myBytes ; b.
+ 00000019  B8 00000004			mov eax,SIZEOF myBytes ; c.
+ 0000001E  B8 00000002			mov eax,TYPE myWords ; d.
+ 00000023  B8 00000004			mov eax,LENGTHOF myWords ; e.
+ 00000028  B8 00000008			mov eax,SIZEOF myWords ; f.
+ 0000002D  B8 00000005			mov eax,SIZEOF myString ; g.
+
+					invoke ExitProcess,0
+ 00000032  6A 00	   *	    push   +000000000h
+ 00000034  E8 00000000 E   *	    call   ExitProcess
+ 00000039			main endp
+				end main
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    03/30/20 11:34:57
+AddTwo.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00001000 DWord	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000011 DWord	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000039 DWord	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000039 Public STDCALL
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+myBytes  . . . . . . . . . . . .	Byte	 00000000 _DATA	
+myString . . . . . . . . . . . .	Byte	 0000000C _DATA	
+myWords  . . . . . . . . . . . .	Word	 00000004 _DATA	
+
+	   0 Warnings
+	   0 Errors
