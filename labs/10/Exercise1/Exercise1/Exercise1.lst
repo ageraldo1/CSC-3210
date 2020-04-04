@@ -1,0 +1,111 @@
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    04/04/20 19:16:40
+AddTwo.asm						     Page 1 - 1
+
+
+				; Exercise 1
+				; Shift and Rotate Instructions
+
+				.386
+				.model flat,stdcall
+				.stack 4096
+					ExitProcess proto,dwExitCode:dword
+
+ 00000000			.code
+ 00000000			main proc
+ 00000000  B8 00000000			mov eax, 0	;debug purpose only
+
+					;========================================================
+					;  D4 = 1101 0100  (212d)
+					;  shr (logical shift right) (division)
+					;  expected value = 212/2 = 106
+					;========================================================
+ 00000005  B0 D4			mov al, 0D4h
+ 00000007  D0 E8			shr al,1
+					;========================================================
+					; AL = 0110 1010 (6Ah) (106d)
+					; CF = 0
+					; OF = 1  (signal changed from negative to positive)
+					;========================================================
+					;Overflow flag 
+					;	- clear : sign bit retains its original value
+					;	- set   : sign changes
+					;========================================================
+
+ 00000009  D0 F8			sar al,1
+					;========================================================
+					; SAR (arithmetic - duplicate sign bit)
+					; AL = 0011 0101 (35h) (53d)
+					; CF = 0
+					; OF = 0  (signal sign bit retains its original value)
+					;========================================================
+
+ 0000000B  B0 D4			mov al,0D4h
+ 0000000D  C0 F8 04			sar al,4
+					;========================================================
+					; D4 = 1101 0100 (-44d)
+					; AL = 1111 1101 (FDh) (-3d)
+					; CF = 0
+					; OF = 0  (signal sign bit retains its original value)
+					;========================================================
+					
+ 00000010  B0 D4			mov al,0D4h
+ 00000012  D0 C0			rol al,1
+					;========================================================
+					; D4 = 1101 0100 
+					; AL = 1010 1001 (A9) 
+					; CF = 1
+					; OF = 0  
+					;========================================================
+					
+ 00000014  C0 C8 03			ror al,3
+					;========================================================
+					; AL = 0011 0101 (35h) 
+					; CF = 0
+					; OF = 0  
+					;========================================================
+
+					invoke ExitProcess,0
+ 00000017  6A 00	   *	    push   +000000000h
+ 00000019  E8 00000000 E   *	    call   ExitProcess
+ 0000001E			main endp
+				end main
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    04/04/20 19:16:40
+AddTwo.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00001000 DWord	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000000 DWord	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 0000001E DWord	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000001E Public STDCALL
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+
+	   0 Warnings
+	   0 Errors
