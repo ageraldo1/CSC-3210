@@ -1,0 +1,111 @@
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    04/08/20 17:37:26
+AddTwo.asm						     Page 1 - 1
+
+
+				; AddTwo.asm - adds two 32-bit integers.
+				; Chapter 3 example
+
+				.386
+				.model flat,stdcall
+				.stack 4096
+				ExitProcess proto,dwExitCode:dword
+
+ 00000000			.data
+ 00000000 1000 2000 3000		wordVal    	WORD	1000h,2000h,3000h,4000h,13
+	   4000 000D
+ 0000000A 34567890			dwordVal  	DWORD	34567890h, 90785634h, 11223344h
+	   90785634
+	   11223344
+ 00000016 0000000A R			pntr        DWORD	dwordVal 
+
+ 0000001A 10 20 30 40			myBytes		BYTE 10h,20h,30h,40h
+ 0000001E  00000003 [			myWords		WORD 3 DUP(?),2000h
+	    0000
+	   ] 2000
+ 00000026 41 42 43 44 45		myString	BYTE "ABCDE"
+ 0000002B 4157 5741 0000		mych		WORD "AW", "WA",0
+
+ 00000031 10 20 30 40			myBytes2	BYTE 10h,20h,30h,40h
+ 00000035 008A 003B 0072		myWords2	WORD 8Ah,3Bh,72h,44h,66h
+	   0044 0066
+ 0000003F 00000001			myDoubles	DWORD 1,2,3,4,5
+	   00000002
+	   00000003
+	   00000004
+	   00000005
+
+ 00000053  00000003 [			myvar2 DWORD 3 DUP(0), 000002ABh
+	    00000000
+	   ] 000002AB
+
+
+ 00000000			.code
+ 00000000			main proc
+ 00000000  B8 00000000			mov eax,0
+ 00000005  B0 F0			mov al, 0F0h
+ 00000007  3C 14			cmp al, 14h
+
+ 00000009  77 04			ja mylabel
+ 0000000B  FE C0			inc al
+ 0000000D  EB 02			jmp next
+ 0000000F				mylabel:
+ 0000000F  04 04				add al, 4
+ 00000011				next:
+					invoke ExitProcess,0
+ 00000011  6A 00	   *	    push   +000000000h
+ 00000013  E8 00000000 E   *	    call   ExitProcess
+ 00000018			main endp
+				end main
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    04/08/20 17:37:26
+AddTwo.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00001000 DWord	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000063 DWord	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000018 DWord	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000018 Public STDCALL
+  mylabel  . . . . . . . . . . .	L Near	 0000000F _TEXT	
+  next . . . . . . . . . . . . .	L Near	 00000011 _TEXT	
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+dwordVal . . . . . . . . . . . .	DWord	 0000000A _DATA	
+myBytes2 . . . . . . . . . . . .	Byte	 00000031 _DATA	
+myBytes  . . . . . . . . . . . .	Byte	 0000001A _DATA	
+myDoubles  . . . . . . . . . . .	DWord	 0000003F _DATA	
+myString . . . . . . . . . . . .	Byte	 00000026 _DATA	
+myWords2 . . . . . . . . . . . .	Word	 00000035 _DATA	
+myWords  . . . . . . . . . . . .	Word	 0000001E _DATA	
+mych . . . . . . . . . . . . . .	Word	 0000002B _DATA	
+myvar2 . . . . . . . . . . . . .	DWord	 00000053 _DATA	
+pntr . . . . . . . . . . . . . .	DWord	 00000016 _DATA	
+wordVal  . . . . . . . . . . . .	Word	 00000000 _DATA	
+
+	   0 Warnings
+	   0 Errors
