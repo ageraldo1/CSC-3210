@@ -1,0 +1,101 @@
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    04/17/20 14:28:55
+AddTwo.asm						     Page 1 - 1
+
+
+				; Problem 1
+				; Write and run the following program. Will the program crash? Why?
+
+				.386
+				.model flat,stdcall
+				.stack 4096
+				ExitProcess proto,dwExitCode:dword
+
+ 00000000			.code
+ 00000000			main proc
+ 00000000  B8 00000000			mov eax, 0					;debug purpose only
+
+ 00000005  E8 00000009			call example1
+					;=======================================================
+					; 1. push offset of next instruction on the stack
+					; 2. copies the address of the called procedure into EIP
+					;=======================================================
+					
+ 0000000A  04 01			add al, 1
+
+					invoke ExitProcess,0
+ 0000000C  6A 00	   *	    push   +000000000h
+ 0000000E  E8 00000000 E   *	    call   ExitProcess
+ 00000013			main endp
+
+ 00000013			example1 proc
+ 00000013  6A 06			push 6
+ 00000015  6A 05			push 5
+
+ 00000017  E8 00000004			call AddTwo
+					;=======================================================
+					; 1. push offset of next instruction on the stack
+					; 2. copies the address of the called procedure into EIP
+					;=======================================================
+
+ 0000001C  83 C4 08			add esp, 8
+ 0000001F  C3				ret
+
+ 00000020			example1 endp
+
+ 00000020			AddTwo proc
+ 00000020  55				push ebp		; backup ebp 
+ 00000021  8B EC				mov ebp, esp
+
+ 00000023  8B 45 0C				mov eax, [ebp+12]
+ 00000026  03 45 08				add eax, [ebp+8]
+ 00000029  5D				pop ebp			; restore ebp
+
+ 0000002A  C3				ret
+					;===================================
+					;  pops top of the stack into EIP
+					;===================================
+ 0000002B			AddTwo endp
+
+				end main
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    04/17/20 14:28:55
+AddTwo.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00001000 DWord	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000000 DWord	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 0000002B DWord	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+AddTwo . . . . . . . . . . . . .	P Near	 00000020 _TEXT	Length= 0000000B Public STDCALL
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+example1 . . . . . . . . . . . .	P Near	 00000013 _TEXT	Length= 0000000D Public STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000013 Public STDCALL
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+
+	   0 Warnings
+	   0 Errors
