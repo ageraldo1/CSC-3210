@@ -1,0 +1,82 @@
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    04/26/20 14:05:29
+AddTwo.asm						     Page 1 - 1
+
+
+				; Exercise 1 - Floating-Point Processing
+				; Write and run the program to find the value of valD.
+				; valD = -valA + (valB * valC)
+
+				.386
+				.model flat,stdcall
+				.stack 4096
+
+				ExitProcess proto,dwExitCode:dword
+
+ 00000000			.data
+ 00000000				valA	REAL8	1.5
+	   3FF8000000000000
+ 00000008				valB	REAL8	2.5
+	   4004000000000000
+ 00000010				valC	REAL8	3.0
+	   4008000000000000
+ 00000018				valD	REAL8	?
+	   0000000000000000
+
+ 00000000			.code
+ 00000000			main proc
+ 00000000  DD 05 00000000 R		fld	valA		; ST(0) valA
+ 00000006  D9 E0			fchs			; change sign of ST(0)
+ 00000008  DD 05 00000008 R		fld valB		; load valB into ST(0)
+ 0000000E  DC 0D 00000010 R		fmul valC		; ST(0) *= valC
+ 00000014  DE C1			fadd			; ST(0) += ST(1)
+ 00000016  DD 1D 00000018 R		fstp valD		; store ST(0) to valD
+
+					invoke ExitProcess,0
+ 0000001C  6A 00	   *	    push   +000000000h
+ 0000001E  E8 00000000 E   *	    call   ExitProcess
+ 00000023			main endp
+				end main
+Microsoft (R) Macro Assembler Version 14.16.27035.0	    04/26/20 14:05:29
+AddTwo.asm						     Symbols 2 - 1
+
+
+
+
+Segments and Groups:
+
+                N a m e                 Size     Length   Align   Combine Class
+
+FLAT . . . . . . . . . . . . . .	GROUP
+STACK  . . . . . . . . . . . . .	32 Bit	 00001000 DWord	  Stack	  'STACK'	 
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000020 DWord	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 00000023 DWord	  Public  'CODE'	
+
+
+Procedures, parameters, and locals:
+
+                N a m e                 Type     Value    Attr
+
+ExitProcess  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000023 Public STDCALL
+
+
+Symbols:
+
+                N a m e                 Type     Value    Attr
+
+@CodeSize  . . . . . . . . . . .	Number	 00000000h   
+@DataSize  . . . . . . . . . . .	Number	 00000000h   
+@Interface . . . . . . . . . . .	Number	 00000003h   
+@Model . . . . . . . . . . . . .	Number	 00000007h   
+@code  . . . . . . . . . . . . .	Text   	 _TEXT
+@data  . . . . . . . . . . . . .	Text   	 FLAT
+@fardata?  . . . . . . . . . . .	Text   	 FLAT
+@fardata . . . . . . . . . . . .	Text   	 FLAT
+@stack . . . . . . . . . . . . .	Text   	 FLAT
+valA . . . . . . . . . . . . . .	QWord	 00000000 _DATA	
+valB . . . . . . . . . . . . . .	QWord	 00000008 _DATA	
+valC . . . . . . . . . . . . . .	QWord	 00000010 _DATA	
+valD . . . . . . . . . . . . . .	QWord	 00000018 _DATA	
+
+	   0 Warnings
+	   0 Errors
